@@ -29,4 +29,21 @@ public class UserRepository : IUserRepository
 
 		return await query.FirstOrDefaultAsync();
 	}
+
+	public async Task<User?> GetByEmailAsync(string email, bool includeDeleted = false, bool includeInactive = false)
+	{
+		var query = _db.Users.AsNoTracking().Where(u => u.Email.ToLower() == email.ToLower());
+
+		if (!includeDeleted)
+		{
+			query = query.Where(u => !u.IsDeleted);
+		}
+
+		if (!includeInactive)
+		{
+			query = query.Where(u => u.IsActive);
+		}
+
+		return await query.FirstOrDefaultAsync();
+	}
 }

@@ -1,6 +1,7 @@
 using Presentation.Endpoints;
 using Infrastructure;
 using System.Text.Json.Serialization;
+// Identity/OpenID usings are registered where needed in services/endpoints
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,5 +43,7 @@ app.MapGet("/healthz", () => Results.Ok(new { status = "healthy", time = DateTim
 // Centraliza las rutas relacionadas con usuarios (GET/POST/PUT/etc.).
 // Ver `Presentation/Endpoints/UserEndpoints.cs` para la definición.
 app.MapUserEndpoints();
+// Registrar endpoints de Auth (exchange)
+app.MapAuthEndpoints();
 
 app.Run();

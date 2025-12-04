@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Application.Interfaces;
 using Infrastructure.Repositories;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols;
+using Infrastructure.Services;
 
 namespace Infrastructure;
 
@@ -33,6 +36,17 @@ public static class DependencyInjection
 
         // Registrar repositorios de infraestructura
         services.AddScoped<IUserRepository, UserRepository>();
+
+        // Registrar ConfigurationManager<OpenIdConnectConfiguration> para cachear JWKS
+        var authority = configuration["Authentication:EntraId:Authority"];
+        if (!string.IsNullOrEmpty(authority))
+        {
+            var metadataAddress = authority.TrimEnd('/') + "/.well-known/openid-configuration";
+            services.AddSingleton(sp => new ConfigurationManager<OpenIdConnectConfiguration>(metadataAddress, new OpenIdConnectConfigurationRetriever()));
+        }
+
+        // Registrar servicio de autenticación (token exchange)
+        services.AddScoped<IAuthService, AuthService>();
 
         // Registrar servicios de la capa Application (handlers, MediatR, etc.)
         services.AddApplication();

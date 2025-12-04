@@ -12,4 +12,9 @@ public interface IUserRepository
     /// <param name="includeDeleted">Si es true, incluye usuarios marcados como eliminados (IsDeleted = true)</param>
     /// <param name="includeInactive">Si es true, incluye usuarios inactivos (IsActive = false). Por defecto solo devuelve activos.</param>
     Task<User?> GetByRunAsync(int run, bool includeDeleted = false, bool includeInactive = false);
+
+    /// <summary>
+    /// Obtiene un usuario por su email.
+    /// </summary>
+    Task<User?> GetByEmailAsync(string email, bool includeDeleted = false, bool includeInactive = false);
 }
