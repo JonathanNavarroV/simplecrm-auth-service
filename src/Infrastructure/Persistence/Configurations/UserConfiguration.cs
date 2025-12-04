@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SimpleCRM.Domain.Entities;
+using Infrastructure.Persistence.SeedData;
 using SimpleCRM.Domain.Common;
 
 namespace Infrastructure.Persistence.Configurations;
@@ -30,6 +31,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(ValidationConstants.EmailMaxLength);
 
-        builder.HasIndex(u => u.Email).IsUnique();
+        builder.HasIndex(u => u.Email).IsUnique(false);
+
+        // Seed data
+        builder.HasData(Users.SeedData);
     }
 }
