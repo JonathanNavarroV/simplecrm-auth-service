@@ -10,7 +10,6 @@ public static class Users
     {
         new User
         {
-            // Run sin guión según diseño (int)
             Run = 19241027,
             Dv = "4",
             FirstNames = "Jonathan Damián",

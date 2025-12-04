@@ -1,0 +1,15 @@
+using System.Threading.Tasks;
+using SimpleCRM.Domain.Entities;
+
+namespace Application.Interfaces;
+
+public interface IUserRepository
+{
+    /// <summary>
+    /// Obtiene un usuario por su RUN.
+    /// </summary>
+    /// <param name="run">RUN del usuario (sin guión)</param>
+    /// <param name="includeDeleted">Si es true, incluye usuarios marcados como eliminados (IsDeleted = true)</param>
+    /// <param name="includeInactive">Si es true, incluye usuarios inactivos (IsActive = false). Por defecto solo devuelve activos.</param>
+    Task<User?> GetByRunAsync(int run, bool includeDeleted = false, bool includeInactive = false);
+}

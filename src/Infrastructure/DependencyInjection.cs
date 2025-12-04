@@ -1,7 +1,10 @@
 using Infrastructure.Persistence;
+using Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Application.Interfaces;
+using Infrastructure.Repositories;
 
 namespace Infrastructure;
 
@@ -27,6 +30,12 @@ public static class DependencyInjection
         // Registra el DbContext principal del AuthService (ApplicationDbContext)
         // Esto permite inyectar ApplicationDbContext en los servicios/controladores
         services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+
+        // Registrar repositorios de infraestructura
+        services.AddScoped<IUserRepository, UserRepository>();
+
+        // Registrar servicios de la capa Application (handlers, MediatR, etc.)
+        services.AddApplication();
 
         // Devuelve el contenedor de servicios actualizado
         return services;
