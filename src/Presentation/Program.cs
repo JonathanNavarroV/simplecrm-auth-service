@@ -1,5 +1,6 @@
 using Presentation.Endpoints;
 using Infrastructure;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,12 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Agregar servicios al contenedor.
 // Más información sobre la configuración de OpenAPI: https://aka.ms/aspnet/openapi
+// Configurar JSON para que no escriba propiedades con valor null
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(opts =>
+{
+    opts.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
