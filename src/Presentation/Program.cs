@@ -4,10 +4,12 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrar servicios de Infrastructure y Application (DbContext, repos y MediatR)
+// Registrar servicios de Infrastructure y Application (DbContext, repos y MediatR).
+// Nota: `AddInfrastructure` también invoca `AddApplication` internamente para
+// registrar los handlers de MediatR y otros servicios de la capa Application.
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// Agregar servicios al contenedor.
+// Agregar servicios al contenedor (OpenAPI y configuración JSON).
 // Más información sobre la configuración de OpenAPI: https://aka.ms/aspnet/openapi
 // Configurar JSON para que no escriba propiedades con valor null
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(opts =>
@@ -37,6 +39,8 @@ app.MapGet("/healthz", () => Results.Ok(new { status = "healthy", time = DateTim
     .WithName("HealthCheck");
 
 // Registrar endpoints agrupados
+// Centraliza las rutas relacionadas con usuarios (GET/POST/PUT/etc.).
+// Ver `Presentation/Endpoints/UserEndpoints.cs` para la definición.
 app.MapUserEndpoints();
 
 app.Run();
