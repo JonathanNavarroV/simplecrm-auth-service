@@ -12,11 +12,12 @@ public static class UserEndpoints
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder app)
     {
         // Obtener usuario por RUN (ejemplo básico)
-        app.MapGet("/api/users/{run:int}", async (int run, [FromServices] IMediator mediator) =>
+        app.MapGet("/users/{run:int}", async (int run, [FromServices] IMediator mediator) =>
         {
             var user = await mediator.Send(new GetUserByRunQuery(run));
             return user is null ? Results.NotFound() : Results.Ok(user);
         })
+        .RequireAuthorization()
         .WithName("GetUserByRun")
         .WithTags("Users");
 

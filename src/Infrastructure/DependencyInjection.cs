@@ -45,8 +45,9 @@ public static class DependencyInjection
             services.AddSingleton(sp => new ConfigurationManager<OpenIdConnectConfiguration>(metadataAddress, new OpenIdConnectConfigurationRetriever()));
         }
 
-        // Registrar servicio de autenticación (token exchange)
-        services.AddScoped<IAuthService, AuthService>();
+        // Registrar implementaciones infra para token handling
+        services.AddScoped<Application.Interfaces.ITokenValidator, OpenIdTokenValidator>();
+        services.AddScoped<Application.Interfaces.ITokenFactory, JwtTokenFactory>();
 
         // Registrar servicios de la capa Application (handlers, MediatR, etc.)
         services.AddApplication();
