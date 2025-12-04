@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SimpleCRM.Domain.Entities;
 
 namespace Infrastructure.Persistence;
 
@@ -20,7 +21,13 @@ public class ApplicationDbContext : DbContext
     /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Llama al comportamiento por defecto de ED Core
+        // Aplicar configuraciones separadas de la carpeta Configurations
+        modelBuilder.ApplyConfiguration(new Configurations.UserConfiguration());
+
+        // Llama al comportamiento por defecto de EF Core
         base.OnModelCreating(modelBuilder);
     }
+
+    // DbSets (tablas)
+    public DbSet<User> Users { get; set; }
 }
