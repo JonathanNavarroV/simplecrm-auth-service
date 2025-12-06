@@ -28,19 +28,19 @@ public class ExchangeCommandHandler : IRequestHandler<ExchangeCommand, ExchangeR
 
         var principal = validate.Principal!;
 
-        // (No logging here to keep Application project lightweight)
-
-        // Prefer external subject (sub/oid) if present
-        var externalId = principal.FindFirst("sub")?.Value ?? principal.FindFirst("oid")?.Value;
-
         User? user = null;
-        // Note: currently there's no ExternalId column in users; fallback to email lookup
-        var email = principal.FindFirst("email")?.Value ?? principal.FindFirst("upn")?.Value ?? principal.FindFirst("preferred_username")?.Value;
-        Console.WriteLine($"Exchange: external token email claim = '{email}'");
+
+        // Buscar email en claim types comunes
+        var email = principal.FindFirst("email")?.Value
+                    ?? principal.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
+                    ?? principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
+                    ?? principal.FindFirst("upn")?.Value
+                    ?? principal.FindFirst("preferred_username")?.Value
+                    ?? principal.FindFirst("name")?.Value;
+
         if (!string.IsNullOrEmpty(email))
         {
             user = await _userRepository.GetByEmailAsync(email, includeDeleted: false, includeInactive: false);
-            Console.WriteLine(user is null ? $"Exchange: no user found for email '{email}'" : $"Exchange: found user Run={user.Run} Email={user.Email}");
         }
 
         if (user is null)

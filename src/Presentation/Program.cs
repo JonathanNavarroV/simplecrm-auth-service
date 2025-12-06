@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistence;
 
 // Program.cs - punto de entrada del servicio Auth
 // Este archivo registra los servicios necesarios y configura el pipeline HTTP.
@@ -44,7 +47,8 @@ var _authConfigured = false;
 if (!string.IsNullOrEmpty(signingKeyBase64))
 {
     var key = new SymmetricSecurityKey(Convert.FromBase64String(signingKeyBase64));
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    builder
+        .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -56,7 +60,7 @@ if (!string.IsNullOrEmpty(signingKeyBase64))
                 ValidAudience = builder.Configuration["Jwt:Audience"],
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,
-                ValidateLifetime = true
+                ValidateLifetime = true,
             };
         });
     builder.Services.AddAuthorization();
@@ -67,6 +71,21 @@ if (!string.IsNullOrEmpty(signingKeyBase64))
 // 5) Construir la aplicación y configurar pipeline
 // -------------------------------------------------
 var app = builder.Build();
+
+// Aplicar migraciones automáticamente en entorno de desarrollo para crear tablas faltantes
+if (app.Environment.IsDevelopment())
+{
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error al aplicar migraciones: {ex.Message}");
+    }
+}
 
 // Si se configuró autenticación, conectar los middlewares correspondientes.
 if (_authConfigured)
