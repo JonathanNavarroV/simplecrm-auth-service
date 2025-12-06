@@ -33,12 +33,12 @@ public static class AuthEndpoints
                 Path = "/",
                 Expires = new DateTimeOffset(response.Expires!.Value)
             };
-            // Keep cookie for browser-based flows
+            // Mantener la cookie para flujos basados en navegador
             ctx.Response.Cookies.Append("internal_token", response.Token!, cookieOptions);
 
-            // Expose the internal token in the response Authorization header so a trusted
-            // gateway can consume it and replace the incoming Authorization header.
-            // Note: do NOT return the token in the response body (avoids storing token in JS-accessible places).
+            // Exponer el token interno en el header Authorization de la respuesta para que un gateway de confianza
+            // lo consuma y reemplace el header Authorization entrante.
+            // Nota: NO devolver el token en el cuerpo de la respuesta (evita que se almacene en lugares accesibles desde JavaScript).
             ctx.Response.Headers["Authorization"] = "Bearer " + response.Token!;
             return Results.Ok(new { message = "Token exchange successful" });
         })

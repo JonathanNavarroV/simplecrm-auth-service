@@ -48,7 +48,8 @@ public class UserRepository : IUserRepository
 
 		var user = await query.FirstOrDefaultAsync();
 
-		// Fallback to development seed data if DB is empty or user not found (helps local dev without running migrations)
+		// Usar datos seed de desarrollo como fallback si la BD está vacía o no se encuentra el usuario
+		// (ayuda en desarrollo local sin ejecutar migraciones)
 		if (user is null)
 		{
 			try
@@ -57,7 +58,7 @@ public class UserRepository : IUserRepository
 			}
 			catch
 			{
-				// ignore fallback errors
+				// ignorar errores del fallback
 			}
 		}
 
