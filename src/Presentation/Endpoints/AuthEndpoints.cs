@@ -4,14 +4,41 @@ using Microsoft.AspNetCore.Routing;
 using Application.Interfaces;
 using MediatR;
 using Application.Features.Auth;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Endpoints;
 
 public static class AuthEndpoints
 {
-    public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder app)
+    public static RouteGroupBuilder MapAuthEndpoints(this RouteGroupBuilder group)
     {
-        app.MapPost("/exchange", async (HttpContext ctx, IMediator mediator) =>
+        var auth = group
+            .MapGroup("/auth")
+            .WithTags("Auth")
+            .WithSummary("Autenticación y sesión")
+            .WithDescription("Operaciones relacionadas con autenticación: exchange de tokens, login, logout y refresh")
+            .WithOpenApi();
+
+        // POST /auth/exchange  (público)
+        auth
+            .MapPost("/exchange", Exchange)
+            .AllowAnonymous()
+            .WithName("ExchangeToken")
+            .WithSummary("Intercambiar token externo por token interno")
+            .WithDescription("Intercambia un token externo por un token interno y establece una cookie HttpOnly para flujos de navegador")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
+
+        return auth;
+    }
+
+    // Handler: Exchange token externo por token interno y setear cookie HttpOnly
+    private static async Task<IResult> Exchange(HttpContext ctx, IMediator mediator)
+    {
+        try
         {
             var authHeader = ctx.Request.Headers["Authorization"].ToString();
             var token = authHeader?.StartsWith("Bearer ") == true ? authHeader.Substring(7) : null;
@@ -31,20 +58,24 @@ public static class AuthEndpoints
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
                 Path = "/",
-                Expires = new DateTimeOffset(response.Expires!.Value)
+                Expires = response.Expires is null ? (DateTimeOffset?)null : new DateTimeOffset(response.Expires.Value)
             };
+
             // Mantener la cookie para flujos basados en navegador
             ctx.Response.Cookies.Append("internal_token", response.Token!, cookieOptions);
 
-            // Exponer el token interno en el header Authorization de la respuesta para que un gateway de confianza
-            // lo consuma y reemplace el header Authorization entrante.
-            // Nota: NO devolver el token en el cuerpo de la respuesta (evita que se almacene en lugares accesibles desde JavaScript).
+            // Exponer el token interno en el header Authorization para que un gateway de confianza lo use.
             ctx.Response.Headers["Authorization"] = "Bearer " + response.Token!;
-            return Results.Ok(new { message = "Token exchange successful" });
-        })
-        .WithName("ExchangeToken")
-        .WithTags("Auth");
 
-        return app;
+            return Results.Ok(new { message = "Intercambio de token completado correctamente" });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(
+                title: "Error al intercambiar token",
+                detail: ex.Message,
+                statusCode: StatusCodes.Status500InternalServerError
+            );
+        }
     }
 }
