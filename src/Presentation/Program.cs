@@ -118,8 +118,10 @@ app.MapGet("/healthz", () => Results.Ok(new { status = "healthy", time = DateTim
 // Mapear conjuntos de endpoints definidos en `Presentation/Endpoints/*`.
 // - `MapUserEndpoints` agrupa rutas relacionadas con user management.
 // - `MapAuthEndpoints` agrupa rutas de intercambio de tokens / autenticación.
-app.MapUserEndpoints();
-app.MapAuthEndpoints();
+// Creamos un grupo raíz para organizar todos los endpoints bajo un prefijo común si fuera necesario.
+var apiGroup = app.MapGroup("");
+apiGroup.MapUserEndpoints();
+apiGroup.MapAuthEndpoints();
 
 // Arranca el servidor Kestrel con la configuración por defecto (puertos en appsettings o variables de entorno)
 app.Run();

@@ -14,6 +14,7 @@ public static class UserEndpoints
     {
             // Agrupar endpoints de usuarios. Al aplicar RequireAuthorization al grupo,
             // todos los endpoints dentro heredarán la política de autorización.
+            // Grupo principal: rutas bajo /users (el frontend consulta `/users/me`)
             var users = app.MapGroup("/users")
                 .RequireAuthorization()
                 .WithTags("Users");

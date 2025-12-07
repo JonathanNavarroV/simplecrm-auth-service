@@ -46,22 +46,6 @@ public class UserRepository : IUserRepository
 			query = query.Where(u => u.IsActive);
 		}
 
-		var user = await query.FirstOrDefaultAsync();
-
-		// Usar datos seed de desarrollo como fallback si la BD está vacía o no se encuentra el usuario
-		// (ayuda en desarrollo local sin ejecutar migraciones)
-		if (user is null)
-		{
-			try
-			{
-				user = Users.SeedData.FirstOrDefault(u => string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase));
-			}
-			catch
-			{
-				// ignorar errores del fallback
-			}
-		}
-
-		return user;
+		return await query.FirstOrDefaultAsync();
 	}
 }

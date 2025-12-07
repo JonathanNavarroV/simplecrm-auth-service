@@ -30,7 +30,7 @@ public class ExchangeCommandHandler : IRequestHandler<ExchangeCommand, ExchangeR
 
         User? user = null;
 
-        // Buscar email en claim types comunes
+        // Buscar al usuario únicamente por email (claims comunes). Si no hay email, fallamos.
         var email = principal.FindFirst("email")?.Value
                     ?? principal.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
                     ?? principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
@@ -38,10 +38,13 @@ public class ExchangeCommandHandler : IRequestHandler<ExchangeCommand, ExchangeR
                     ?? principal.FindFirst("preferred_username")?.Value
                     ?? principal.FindFirst("name")?.Value;
 
-        if (!string.IsNullOrEmpty(email))
+        if (string.IsNullOrEmpty(email))
         {
-            user = await _userRepository.GetByEmailAsync(email, includeDeleted: false, includeInactive: false);
+            // No tenemos email en las claims -> no podemos identificar al usuario
+            return ExchangeResponse.UserNotFound();
         }
+
+        user = await _userRepository.GetByEmailAsync(email, includeDeleted: false, includeInactive: false);
 
         if (user is null)
             return ExchangeResponse.UserNotFound();
