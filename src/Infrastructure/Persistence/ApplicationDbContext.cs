@@ -33,4 +33,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<PermissionModule> PermissionModules { get; set; }
     public DbSet<PermissionSection> PermissionSections { get; set; }
     public DbSet<PermissionType> PermissionTypes { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
 }

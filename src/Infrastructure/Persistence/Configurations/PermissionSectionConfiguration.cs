@@ -23,6 +23,7 @@ public class PermissionSectionConfiguration : IEntityTypeConfiguration<Permissio
             .HasMaxLength(ValidationConstants.NameMaxLength);
 
         builder.Property(s => s.Description)
+            .IsRequired()
             .HasMaxLength(ValidationConstants.DescriptionMaxLength);
 
         builder.HasOne(s => s.PermissionModule)

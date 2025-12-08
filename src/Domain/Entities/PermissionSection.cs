@@ -7,7 +7,7 @@ public class PermissionSection
     public Guid Id { get; set; }
     public required string Code { get; set; }
     public required string Name { get; set; }
-    public string? Description { get; set; }
+    public required string Description { get; set; }
 
     public bool IsActive { get; set; } = true;
 
@@ -16,4 +16,7 @@ public class PermissionSection
 
     // Navegación inversa
     public PermissionModule PermissionModule { get; set; } = null!;
+    
+    // Un section puede tener muchos permisos
+    public ICollection<Permission> Permissions { get; set; } = new List<Permission>();
 }

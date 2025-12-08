@@ -23,6 +23,7 @@ public class PermissionTypeConfiguration : IEntityTypeConfiguration<PermissionTy
             .HasMaxLength(ValidationConstants.NameMaxLength);
 
         builder.Property(t => t.Description)
+            .IsRequired()
             .HasMaxLength(ValidationConstants.DescriptionMaxLength);
 
         builder.HasIndex(t => t.Code).IsUnique();
