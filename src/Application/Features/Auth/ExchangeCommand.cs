@@ -1,5 +1,5 @@
 using MediatR;
-using SimpleCRM.Domain.Shared;
+using Domain.Shared;
 
 namespace Application.Features.Auth;
 

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SimpleCRM.Domain.Entities;
+using Domain.Entities;
 using Infrastructure.Persistence.SeedData;
-using SimpleCRM.Domain.Common;
+using Domain.Common;
 
 namespace Infrastructure.Persistence.Configurations;
 

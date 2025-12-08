@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Persistence;
-using SimpleCRM.Domain.Entities;
+using Domain.Entities;
 using Application.Interfaces;
 using Infrastructure.Persistence.SeedData;
 using System;

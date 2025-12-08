@@ -1,6 +1,6 @@
 using System;
 
-namespace SimpleCRM.Domain.Shared;
+namespace Domain.Shared;
 
 public record ExchangeResponse(bool Success, string? Token, DateTime? Expires, string? FailureCode)
 {

@@ -1,12 +1,11 @@
 using System;
-using SimpleCRM.Domain.Entities;
+using Domain.Entities;
 
 namespace Infrastructure.Persistence.SeedData;
 
 public static class Users
 {
-    // Datos mock para development / pruebas
-        public static readonly User[] SeedData = new[]
+    public static readonly User[] SeedData = new[]
     {
         new User
         {

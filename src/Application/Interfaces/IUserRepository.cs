@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using SimpleCRM.Domain.Entities;
+using Domain.Entities;
 
 namespace Application.Interfaces;
 

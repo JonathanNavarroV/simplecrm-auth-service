@@ -1,8 +1,8 @@
 using MediatR;
 using Application.Interfaces;
 using System.Security.Claims;
-using SimpleCRM.Domain.Entities;
-using SimpleCRM.Domain.Shared;
+using Domain.Entities;
+using Domain.Shared;
 
 namespace Application.Features.Auth;
 
