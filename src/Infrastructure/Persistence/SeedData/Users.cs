@@ -13,15 +13,7 @@ public static class Users
             Dv = "4",
             FirstNames = "Jonathan Damián",
             LastNames = "Navarro Vega",
-            Email = "jonathan.d.navarro.v@gmail.com",
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = new DateTime(2025, 12, 4, 0, 0, 0, DateTimeKind.Utc),
-            CreatedByUserRun = null,
-            UpdatedAt = new DateTime(2025, 12, 4, 0, 0, 0, DateTimeKind.Utc),
-            UpdatedByUserRun = null,
-            DeletedAt = null,
-            DeletedByUserRun = null
+            Email = "jonathan.d.navarro.v@gmail.com"
         }
     };
 }

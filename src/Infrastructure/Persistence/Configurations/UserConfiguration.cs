@@ -33,7 +33,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(u => u.Email).IsUnique(false);
 
-    // Datos de seed (datos de inicialización)
+        // Estado por defecto
+        builder.Property(u => u.IsActive)
+            .IsRequired();
+
+        builder.Property(u => u.IsDeleted)
+            .IsRequired();
+
+        // Datos de seed (datos de inicialización)
         builder.HasData(Users.SeedData);
     }
 }

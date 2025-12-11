@@ -14,11 +14,11 @@ public class User
 
     // Auditoría
     public DateTime CreatedAt { get; set; }
-    public int? CreatedByUserRun { get; set; }
+    public int CreatedByUserRun { get; set; }
 
     public DateTime UpdatedAt { get; set; }
-    public int? UpdatedByUserRun { get; set; }
+    public int UpdatedByUserRun { get; set; }
 
-    public DateTime? DeletedAt { get; set; }
-    public int? DeletedByUserRun { get; set; }
+    public DateTime DeletedAt { get; set; }
+    public int DeletedByUserRun { get; set; }
 }
