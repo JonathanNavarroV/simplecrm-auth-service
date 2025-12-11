@@ -17,16 +17,9 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .IsRequired()
             .HasMaxLength(ValidationConstants.NameMaxLength);
 
-        builder.Property(r => r.Description)
-            .IsRequired()
-            .HasMaxLength(ValidationConstants.DescriptionMaxLength);
-
-        builder.Property(r => r.IsActive)
-            .IsRequired();
-
-        builder.Property(r => r.IsDeleted)
-            .IsRequired();
-
         builder.HasIndex(r => r.Name).IsUnique();
+
+        builder.Property(r => r.Description)
+            .HasMaxLength(ValidationConstants.DescriptionMaxLength);
     }
 }

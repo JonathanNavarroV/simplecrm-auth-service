@@ -31,16 +31,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(ValidationConstants.EmailMaxLength);
 
-        builder.HasIndex(u => u.Email).IsUnique(false);
+        builder.HasIndex(u => u.Email).IsUnique();
 
-        // Estado por defecto
-        builder.Property(u => u.IsActive)
-            .IsRequired();
-
-        builder.Property(u => u.IsDeleted)
-            .IsRequired();
-
-        // Datos de seed (datos de inicialización)
+        // Seed
         builder.HasData(Users.SeedData);
     }
 }
