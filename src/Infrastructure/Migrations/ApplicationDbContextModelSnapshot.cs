@@ -356,6 +356,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
@@ -382,6 +383,16 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Description = "Rol con todos los permisos del sistema",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Administrador"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.RolePermission", b =>
