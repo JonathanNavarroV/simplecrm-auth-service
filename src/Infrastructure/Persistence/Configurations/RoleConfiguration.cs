@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
 using Domain.Common;
+using Infrastructure.Persistence.SeedData;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -20,6 +21,10 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.HasIndex(r => r.Name).IsUnique();
 
         builder.Property(r => r.Description)
+            .IsRequired()
             .HasMaxLength(ValidationConstants.DescriptionMaxLength);
+
+        // Seed
+        builder.HasData(Roles.SeedData);
     }
 }
