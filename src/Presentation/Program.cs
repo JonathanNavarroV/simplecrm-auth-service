@@ -83,7 +83,10 @@ if (app.Environment.IsDevelopment())
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error al aplicar migraciones: {ex.Message}");
+        Console.Error.WriteLine($"Error al aplicar migraciones: {ex}");
+        // No permitir que el servicio continúe si las migraciones fallaron.
+        // Lanzamos para que el proceso termine con código de error.
+        throw;
     }
 }
 
