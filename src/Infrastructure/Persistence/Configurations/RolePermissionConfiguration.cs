@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
+using Infrastructure.Persistence.SeedData;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -21,5 +22,8 @@ public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermissi
             .WithMany()
             .HasForeignKey(rp => rp.PermissionId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Seed: asignar todos los permisos al rol Administrador
+        builder.HasData(RolePermissions.SeedData);
     }
 }
