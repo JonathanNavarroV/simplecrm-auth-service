@@ -60,6 +60,13 @@ public class ExchangeCommandHandler : IRequestHandler<ExchangeCommand, ExchangeR
             new Claim("provider", "entra")
         };
 
+        // Añadir permisos del usuario como claims 'permission'
+        var permissionCodes = await _userRepository.GetPermissionCodesAsync(user.Run);
+        foreach (var code in permissionCodes)
+        {
+            claims.Add(new Claim("permission", code));
+        }
+
         var result = await _tokenFactory.CreateInternalTokenAsync(claims);
         return ExchangeResponse.FromSuccess(result.InternalToken, result.Expires);
     }
