@@ -2,6 +2,8 @@ using Presentation.Endpoints;
 using Infrastructure;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Infrastructure.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +39,15 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(opts =>
 builder.Services.AddOpenApi();
 
 // -------------------------------------------------
-// 4) Autenticación JWT (opcional según configuración)
+// 4) Autorización dinámica por permisos
+// -------------------------------------------------
+// Registramos el PolicyProvider y el AuthorizationHandler que permiten usar
+// [Permissions("MODULE:ACTION")] en los endpoints.
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+// -------------------------------------------------
+// 5) Autenticación JWT (opcional según configuración)
 // -------------------------------------------------
 // Si en configuración se encuentra Jwt:SigningKeyBase64, registramos un esquema
 // JWT con clave simétrica para validar tokens internos emitidos por JwtTokenFactory.

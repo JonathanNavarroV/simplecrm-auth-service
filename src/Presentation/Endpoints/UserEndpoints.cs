@@ -22,6 +22,7 @@ public static class UserEndpoints
             // Obtener usuario por RUN (ejemplo básico)
             users
                 .MapGet("/{run:int}", GetUserByRun)
+                .WithMetadata(new Attributes.PermissionsAttribute("USERS:READ"))
                 .WithName("GetUserByRun")
                 .WithSummary("Obtener usuario por RUN")
                 .WithDescription("Obtiene la información de un usuario dado su RUN")
