@@ -33,6 +33,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(u => u.Email).IsUnique();
 
+        // Auditoría: mapear a timestamp with time zone
+        builder.Property(u => u.CreatedAt)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(u => u.UpdatedAt)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(u => u.DeletedAt)
+            .HasColumnType("timestamp with time zone");
+
         // Seed
         builder.HasData(Users.SeedData);
     }

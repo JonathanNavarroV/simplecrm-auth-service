@@ -26,5 +26,15 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
 
         // Seed
         builder.HasData(Roles.SeedData);
+
+        // Auditoría: mapear a timestamp with time zone
+        builder.Property(r => r.CreatedAt)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(r => r.UpdatedAt)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(r => r.DeletedAt)
+            .HasColumnType("timestamp with time zone");
     }
 }

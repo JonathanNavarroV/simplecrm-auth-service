@@ -30,8 +30,13 @@ public class ApplicationDbContext : DbContext
 
     // DbSets (tablas)
     public DbSet<User> Users { get; set; }
+    public DbSet<EventLog> EventLogs { get; set; }
     public DbSet<PermissionModule> PermissionModules { get; set; }
     public DbSet<PermissionSection> PermissionSections { get; set; }
     public DbSet<PermissionType> PermissionTypes { get; set; }
     public DbSet<Permission> Permissions { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<RolePermission> RolePermissions { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<UserPermission> UserPermissions { get; set; }
 }
