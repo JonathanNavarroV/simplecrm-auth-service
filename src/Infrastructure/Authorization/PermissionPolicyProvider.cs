@@ -27,15 +27,15 @@ public class PermissionPolicyProvider : IAuthorizationPolicyProvider
         {
             var permission = policyName.Substring(Prefix.Length);
 
-            // Si el permiso viene en forma corta MODULE:ACTION (2 partes), lo
-            // expandimos a MODULE:MODULE:ACTION para evitar repetir el módulo
-            // en cada atributo (p. ej. USERS:READ -> USERS:USERS:READ).
+            // Si el permiso viene en forma corta RESOURCE:ACTION (2 partes), lo
+            // expandimos a USERS:RESOURCE:ACTION ya que en este servicio el
+            // módulo principal es siempre `USERS`.
             var parts = permission.Split(':', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 2)
             {
-                var module = parts[0];
+                var resource = parts[0];
                 var action = parts[1];
-                permission = string.Join(':', module, module, action);
+                permission = string.Join(':', "USERS", resource, action);
             }
 
             var policy = new AuthorizationPolicyBuilder()
