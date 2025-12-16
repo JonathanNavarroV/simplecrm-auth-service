@@ -46,8 +46,8 @@ public static class DependencyInjection
         }
 
         // Registrar implementaciones infra para token handling
-        services.AddScoped<Application.Interfaces.ITokenValidator, OpenIdTokenValidator>();
-        services.AddScoped<Application.Interfaces.ITokenFactory, JwtTokenFactory>();
+        services.AddScoped<ITokenValidator, OpenIdTokenValidator>();
+        services.AddScoped<ITokenFactory, JwtTokenFactory>();
 
         // Registrar servicios de la capa Application (handlers, MediatR, etc.)
         services.AddApplication();
