@@ -22,4 +22,9 @@ public interface IUserRepository
     /// Obtiene los códigos de permiso asociados al usuario (permisos directos y los heredados por roles).
     /// </summary>
     Task<string[]> GetPermissionCodesAsync(int run);
+
+    /// <summary>
+    /// Obtiene los nombres de los roles asignados al usuario.
+    /// </summary>
+    Task<string[]> GetRoleNamesAsync(int run);
 }

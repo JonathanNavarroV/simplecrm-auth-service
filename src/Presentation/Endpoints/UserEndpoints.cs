@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Users.Queries.GetUserByRun;
+using Application.Features.Users.Queries.GetCurrentUser;
 using System.Security.Claims;
 
 namespace Presentation.Endpoints;
@@ -82,7 +83,7 @@ public static class UserEndpoints
                 return Results.BadRequest("Claim 'run' inválida");
             }
 
-            var user = await mediator.Send(new GetUserByRunQuery(run));
+            var user = await mediator.Send(new GetCurrentUserQuery(run));
             return user is null ? Results.NotFound() : Results.Ok(user);
         }
         catch (Exception ex)

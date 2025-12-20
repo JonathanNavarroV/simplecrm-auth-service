@@ -70,4 +70,14 @@ public class UserRepository : IUserRepository
 		var all = userPerms.Concat(rolePerms).Distinct();
 		return await all.ToArrayAsync();
 	}
+
+	public async Task<string[]> GetRoleNamesAsync(int run)
+	{
+		var roles = from ur in _db.UserRoles
+					where ur.UserRun == run
+					join r in _db.Roles on ur.RoleId equals r.Id
+					select r.Name;
+
+		return await roles.Distinct().ToArrayAsync();
+	}
 }
