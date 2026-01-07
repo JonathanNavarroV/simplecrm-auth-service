@@ -1,0 +1,11 @@
+services:
+  postgres-auth:
+    image: postgres:16
+    container_name: simplecrm_postgres_auth
+    env_file:
+      - .env.auth.dev
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data

@@ -1,0 +1,14 @@
+services:
+  postgres-auth:
+    image: postgres:16
+    container_name: simplecrm_postgres_auth
+    env_file:
+      - .env.auth.qa
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_auth_data:
